@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">KikiVyhun</string>
+
+    <string name="text_view_authentication">Authentication</string>
+
+    <string name="edit_text_login">Login</string>
+    <string name="edit_text_password">Password</string>
+
+    <string name="button_connect">Connection</string>
+    <string name="button_register">Register</string>
+
+    <string name="checkbox_password_save">Save password and login ?</string>
+</resources>
