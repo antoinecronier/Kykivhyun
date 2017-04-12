@@ -3,6 +3,8 @@
 
     <string name="text_view_authentication">Authentication</string>
 
+    <string name="switch_event_row_participation">Would you participate ?</string>
+
     <string name="edit_text_login">Login</string>
     <string name="edit_text_password">Password</string>
 

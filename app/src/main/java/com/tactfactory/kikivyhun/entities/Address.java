@@ -1,6 +1,7 @@
 package com.tactfactory.kikivyhun.entities;
 
 import android.location.Location;
+import android.widget.ListView;
 
 import com.tactfactory.kikivyhun.entities.base.EntityBase;
 

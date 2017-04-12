@@ -13,7 +13,7 @@ public class Event extends EntityBase {
     private String title;
     private Date start_date;
     private Date end_date;
-    private int nb_participants;
+    private int max_participants;
     private ArrayList<User> users;
     private ArrayList<Participant> participants;
     private Category category;
@@ -43,12 +43,12 @@ public class Event extends EntityBase {
         this.end_date = end_date;
     }
 
-    public int getNb_participants() {
-        return nb_participants;
+    public int getMax_participants() {
+        return max_participants;
     }
 
-    public void setNb_participants(int nb_participants) {
-        this.nb_participants = nb_participants;
+    public void setMax_participants(int nb_participants) {
+        this.max_participants = nb_participants;
     }
 
     public ArrayList<User> getUsers() {
@@ -81,5 +81,23 @@ public class Event extends EntityBase {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public Event(){
+        this.users = new ArrayList<User>();
+        this.participants = new ArrayList<Participant>();
+    }
+
+    public Event(String title,String category_name, String address_city, Date start_date){
+        this.title = title;
+        this.category = new Category();
+        this.category.setName(category_name);
+        this.start_date = start_date;
+        this.place = new Place();
+        this.place.setAddress(new Address());
+        this.place.getAddress().setCity(address_city);
+
+        this.users = new ArrayList<User>();
+        this.participants = new ArrayList<Participant>();
     }
 }

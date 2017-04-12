@@ -6,4 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.tactfactory.kikivyhun.activities.EventActivity">
 
+    <ListView
+        android:id="@+id/eventListView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <include layout="@layout/ring_loader"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="100dp"
+        android:layout_width="100dp" />
 </android.support.constraint.ConstraintLayout>

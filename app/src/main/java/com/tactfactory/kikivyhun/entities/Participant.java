@@ -9,7 +9,7 @@ import com.tactfactory.kikivyhun.entities.base.EntityBase;
 public class Participant extends EntityBase {
     private User user;
     private Event event;
-    private Boolean as_come;
+    private Boolean has_come;
 
     public User getUser() {
         return user;
@@ -27,11 +27,11 @@ public class Participant extends EntityBase {
         this.event = event;
     }
 
-    public Boolean getAs_come() {
-        return as_come;
+    public Boolean getHas_come() {
+        return has_come;
     }
 
-    public void setAs_come(Boolean as_come) {
-        this.as_come = as_come;
+    public void setHas_come(Boolean as_come) {
+        this.has_come = has_come;
     }
 }
