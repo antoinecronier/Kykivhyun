@@ -66,7 +66,7 @@ public class User extends EntityBase {
     }
 
     public static class UserEntry {
-        public static final String TABLE_NAME = "place";
+        public static final String TABLE_NAME = "user";
         public static final String COLUMN_NAME_FIRSTNAME = "firstname";
         public static final String COLUMN_NAME_LASTNAME = "lastname";
         public static final String COLUMN_NAME_LOGIN = "login";

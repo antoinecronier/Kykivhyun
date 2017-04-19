@@ -11,7 +11,6 @@ import java.io.Serializable;
 public abstract class EntityBase implements Serializable {
     private long id;
 
-
     public long getId() {
         return id;
     }

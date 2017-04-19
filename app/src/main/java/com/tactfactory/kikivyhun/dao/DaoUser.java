@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.tactfactory.kikivyhun.dao.base.DaoBase;
+import com.tactfactory.kikivyhun.dao.daointerface.IDaoUser;
 import com.tactfactory.kikivyhun.dao.daointerface.base.IDaoEntity;
 import com.tactfactory.kikivyhun.entities.User;
 import com.tactfactory.kikivyhun.entities.base.EntityBase;
@@ -17,18 +18,18 @@ import java.util.List;
  * Created by tactfactory on 19/04/17.
  */
 
-public class UserDao extends DaoBase implements IDaoEntity<User> {
+public class DaoUser extends DaoBase implements IDaoUser {
 
     private static final String TABLE = User.UserEntry.TABLE_NAME;
     private static final String[] PROJECTION = User.UserEntry.PROJECTION;
 
-    public UserDao(Context context) {
+    public DaoUser(Context context) {
         super(context);
     }
 
     @Override
-    public void insertData(User item) {
-        item.setId(super.insertData(TABLE, getContentValues(item)));
+    public void insert(User item) {
+        item.setId(super.insert(TABLE, getContentValues(item)));
     }
 
     @Override
@@ -60,6 +61,33 @@ public class UserDao extends DaoBase implements IDaoEntity<User> {
     @Override
     public void update(User item) {
         super.update(item.getId(),TABLE,getContentValues(item));
+    }
+
+    @Override
+    public User getUserByLoginAndPassword(String login, String password) {
+        super.db = dbHelper.getReadableDatabase();
+
+        String selection = User.UserEntry.COLUMN_NAME_LOGIN + " = ?"
+                + " AND "
+                + User.UserEntry.COLUMN_NAME_PASSWORD + " = ?";
+        String[] selectionArgs = {
+                login,
+                password
+        };
+
+        Cursor cursor = db.query(
+                TABLE,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToNext();
+
+        return cursorToItem(cursor);
     }
 
     public User cursorToItem(Cursor cursor){

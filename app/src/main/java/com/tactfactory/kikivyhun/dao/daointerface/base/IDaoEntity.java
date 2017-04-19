@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public interface IDaoEntity<T extends EntityBase> {
-    public void insertData(T item);
+    public void insert(T item);
     public T selectById(long id);
     public List<T> select();
     public void delete(T item);

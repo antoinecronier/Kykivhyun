@@ -13,6 +13,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.tactfactory.kikivyhun.R;
+import com.tactfactory.kikivyhun.dao.DaoUser;
+import com.tactfactory.kikivyhun.dao.base.DaoBase;
+import com.tactfactory.kikivyhun.dao.daointerface.IDaoUser;
+import com.tactfactory.kikivyhun.dao.daointerface.base.IDaoBase;
 import com.tactfactory.kikivyhun.entities.Address;
 import com.tactfactory.kikivyhun.entities.User;
 import com.tactfactory.kikivyhun.utils.database.DatabaseManager;
@@ -40,13 +44,14 @@ public class LoginActivity extends AppCompatActivity {
     private Button register;
 
     private SharedPreferences prefs;
+    private DaoUser userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        RetrieveDataAsyncTask retrieve = new RetrieveDataAsyncTask();
-//        retrieve.execute("http://www.mocky.io/v2/58ef7aad1000006f15ebc645");
+        userDao = new DaoUser(this);
+
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -79,8 +84,10 @@ public class LoginActivity extends AppCompatActivity {
                             .apply();
                 }
 
-                if (login.getText().toString().equals("login") &&
-                        password.getText().toString().equals("pass")) {
+                if (userDao.getUserByLoginAndPassword(
+                        login.getText().toString(),
+                        password.getText().toString())
+                    != null) {
                     User currentUser = new User();
                     currentUser.setLogin("login");
                     currentUser.setPassword("pass");

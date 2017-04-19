@@ -15,19 +15,16 @@ import com.tactfactory.kikivyhun.utils.database.DatabaseHelper;
 
 public abstract class DaoBase implements IDaoBase{
 
-    private SQLiteDatabase db;
-    private DatabaseHelper dbHelper;
+    protected SQLiteDatabase db;
+    protected DatabaseHelper dbHelper;
 
     public DaoBase(Context context){
         dbHelper = new DatabaseHelper(context);
     }
 
-    public long insertData(String table, ContentValues values){
+    public long insert(String table, ContentValues values){
         db = dbHelper.getWritableDatabase();
-
-        long newRowId = db.insert(table, null, values);
-
-        return newRowId;
+        return db.insert(table, null, values);
     }
 
     public Cursor selectById(long id, String table, String[] projection){
