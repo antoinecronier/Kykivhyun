@@ -1,5 +1,7 @@
 package com.tactfactory.kikivyhun.entities.base;
 
+import android.provider.BaseColumns;
+
 import java.io.Serializable;
 
 /**
@@ -7,14 +9,18 @@ import java.io.Serializable;
  */
 
 public abstract class EntityBase implements Serializable {
-    private int id;
+    private long id;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public static class EntityBaseEntry implements BaseColumns {
+        public static final String COLUMN_NAME_ID = "id";
     }
 }

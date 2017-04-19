@@ -3,6 +3,7 @@ package com.tactfactory.kikivyhun.adapter;
 import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.ToggleButton;
 import com.tactfactory.kikivyhun.MyApplication;
 import com.tactfactory.kikivyhun.R;
 import com.tactfactory.kikivyhun.activities.EventActivity;
+import com.tactfactory.kikivyhun.activities.MapsActivity;
 import com.tactfactory.kikivyhun.entities.Event;
 
 import java.text.DateFormat;
@@ -75,7 +77,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         viewHolder.participation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(EventAdapter.this.context,"checked " + isChecked,Toast.LENGTH_LONG).show();
+                //Toast.makeText(EventAdapter.this.context,"checked " + isChecked,Toast.LENGTH_LONG).show();
             }
         });
 

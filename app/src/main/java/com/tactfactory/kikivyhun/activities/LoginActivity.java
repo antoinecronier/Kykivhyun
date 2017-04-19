@@ -1,26 +1,32 @@
 package com.tactfactory.kikivyhun.activities;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.tactfactory.kikivyhun.MyApplication;
 import com.tactfactory.kikivyhun.R;
+import com.tactfactory.kikivyhun.entities.Address;
 import com.tactfactory.kikivyhun.entities.User;
-import com.tactfactory.kikivyhun.utils.gps.MyLocationListener;
+import com.tactfactory.kikivyhun.utils.database.DatabaseManager;
+import com.tactfactory.kikivyhun.utils.gps.UserLocationListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,6 +45,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        RetrieveDataAsyncTask retrieve = new RetrieveDataAsyncTask();
+//        retrieve.execute("http://www.mocky.io/v2/58ef7aad1000006f15ebc645");
+
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_login);
@@ -49,11 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         connection = (Button) findViewById(R.id.buttonConnect);
         register = (Button) findViewById(R.id.buttonRegister);
 
-        if (prefs.contains(LOGIN_KEY) && prefs.contains(PASSWORD_KEY)) {
-            login.setText(prefs.getString(LOGIN_KEY, ""));
-            password.setText(prefs.getString(PASSWORD_KEY, ""));
-            passwordSave.setChecked(true);
-        }
+        setWithPrefs();
 
         connection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,30 +87,10 @@ public class LoginActivity extends AppCompatActivity {
                     currentUser.setLastname("lastname");
                     currentUser.setFirstname("firstname");
 
-                    LocationManager locationManager = (LocationManager)
-                            getSystemService(Context.LOCATION_SERVICE);
+                    UserLocationListener.getInstance()
+                            .setMyLocationListener(LoginActivity.this, currentUser);
 
-                    LocationListener locationListener = new MyLocationListener(LoginActivity.this, currentUser);
-                    if (ActivityCompat.checkSelfPermission(
-                                LoginActivity.this,
-                                Manifest.permission.ACCESS_FINE_LOCATION)
-                                == PackageManager.PERMISSION_GRANTED
-                            && ActivityCompat.checkSelfPermission(
-                                    LoginActivity.this,
-                                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                                    == PackageManager.PERMISSION_GRANTED) {
-
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-                    }
-
-
-                    currentUser.setGps(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("USER",currentUser);
-
-                    startActivity(new Intent(LoginActivity.this,EventActivity.class), bundle);
+                    startActivity(new Intent(LoginActivity.this,EventActivity.class));
                 }
             }
         });
@@ -113,8 +98,90 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("LOGIN",LoginActivity.this.login.getText().toString());
+                bundle.putString("PASSWORD",LoginActivity.this.password.getText().toString());
+                intent.putExtras(bundle);
+
+                startActivity(intent);
             }
         });
+    }
+
+    private void setWithPrefs() {
+        if (prefs.contains(LOGIN_KEY) && prefs.contains(PASSWORD_KEY)) {
+            login.setText(prefs.getString(LOGIN_KEY, ""));
+            password.setText(prefs.getString(PASSWORD_KEY, ""));
+            passwordSave.setChecked(true);
+        }else{
+            login.setText("");
+            password.setText("");
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setWithPrefs();
+    }
+
+    public static JSONArray getJSONObjectFromURL(String urlString) throws IOException, JSONException {
+
+        HttpURLConnection urlConnection = null;
+
+        URL url = new URL(urlString);
+
+        urlConnection = (HttpURLConnection) url.openConnection();
+
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setReadTimeout(10000 /* milliseconds */);
+        urlConnection.setConnectTimeout(15000 /* milliseconds */);
+
+        urlConnection.setDoOutput(true);
+
+        urlConnection.connect();
+
+        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
+
+        String jsonString = new String();
+
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line+"\n");
+        }
+        br.close();
+
+        jsonString = sb.toString();
+
+        System.out.println("JSON: " + jsonString);
+
+        return new JSONArray(jsonString);
+    }
+
+    private class RetrieveDataAsyncTask extends AsyncTask<String, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(String... params) {
+            JSONArray jsonObject = new JSONArray();
+            try {
+                jsonObject = getJSONObjectFromURL(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray obj) {
+            if (obj != null) {
+                Log.d("JSON",obj.toString());
+            }
+        }
     }
 }

@@ -8,8 +8,21 @@
     <string name="edit_text_login">Login</string>
     <string name="edit_text_password">Password</string>
 
+
+
     <string name="button_connect">Connection</string>
     <string name="button_register">Register</string>
 
     <string name="checkbox_password_save">Save password and login ?</string>
+
+    <string name="title_activity_maps">Map</string>
+
+    <string name="editTextFirstname">Firstname</string>
+    <string name="editTextLastname">Lastname</string>
+    <string name="editTextPassword">Password</string>
+    <string name="editTextPasswordValidator">Confirm Password</string>
+    <string name="editTextLogin">Login</string>
+    <string name="checkBoxCGU">URL for CGU</string>
+    <string name="buttonRegister">Register</string>
+
 </resources>

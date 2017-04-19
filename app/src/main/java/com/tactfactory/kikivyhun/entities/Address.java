@@ -1,6 +1,7 @@
 package com.tactfactory.kikivyhun.entities;
 
 import android.location.Location;
+import android.provider.BaseColumns;
 import android.widget.ListView;
 
 import com.tactfactory.kikivyhun.entities.base.EntityBase;
@@ -14,7 +15,8 @@ public class Address extends EntityBase {
     private String name_way;
     private String postal_code;
     private String city;
-    private Location gps;
+    private Double lat;
+    private Double lng;
 
     public String getNum_way() {
         return num_way;
@@ -48,11 +50,42 @@ public class Address extends EntityBase {
         this.city = city;
     }
 
-    public Location getGps() {
-        return gps;
+    public Double getLat() {
+        return lat;
     }
 
-    public void setGps(Location gps) {
-        this.gps = gps;
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public static class AddressEntry {
+        public static final String TABLE_NAME = "address";
+        public static final String COLUMN_NAME_NUM_WAY = "num_way";
+        public static final String COLUMN_NAME_NAME_WAY = "name_way";
+        public static final String COLUMN_NAME_POSTAL_CODE = "postal_code";
+        public static final String COLUMN_NAME_CITY = "city";
+        public static final String COLUMN_NAME_LAT = "lat";
+        public static final String COLUMN_NAME_LNG = "lng";
+
+        public static final String SQL_CREATE_ENTRIES =
+                "CREATE TABLE " + AddressEntry.TABLE_NAME + " (" +
+                        EntityBase.EntityBaseEntry.COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
+                        AddressEntry.COLUMN_NAME_NUM_WAY + " TEXT," +
+                        AddressEntry.COLUMN_NAME_NAME_WAY + " TEXT," +
+                        AddressEntry.COLUMN_NAME_POSTAL_CODE + " TEXT," +
+                        AddressEntry.COLUMN_NAME_CITY + " TEXT," +
+                        AddressEntry.COLUMN_NAME_LAT + " REAL," +
+                        AddressEntry.COLUMN_NAME_LNG + " REAL);";
+
+        public static final String SQL_DELETE_ENTRIES =
+                "DROP TABLE IF EXISTS " + AddressEntry.TABLE_NAME + ";";
     }
 }
